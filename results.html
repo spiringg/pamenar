@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SEO Analysis Results - {{ keyword }}</title>
+    <style>
+        body { font-family: sans-serif; }
+        .result { margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; }
+        .dates { /* Style for publish/modify dates if you like */ } 
+    </style>
+</head>
+<body>
+    <h1>SEO Analysis Results for "{{ keyword }}"</h1>
+    <p class="version">Script Version: {{ VERSION }}</p> 
+
+    {% for result in results %}
+    <div class="result">
+        <h2><a href="{{ result.url }}">{{ result.title }} ({{ result.title_length }} characters)</a></h2> 
+        <p>{{ result.description }} ({{ result.desc_length }} characters)</p> 
+        <p>
+            Keyword in Title: {{ result.keyword_in_title }}<br>  
+            Keyword in Description: {{ result.keyword_in_desc }}<br>
+            Keyword Density (Title): {{ result.title_density | round(1) }}% <br> 
+            Keyword Density (Description): {{ result.desc_density | round(1) }}% 
+        </p>
+
+        <h2>Headings</h2>
+        {% if result.headings %}  
+            <ul> 
+            {% for heading in result.headings %}
+                <li>{{ heading.tag }}: {{ heading.text }}</li>
+            {% endfor %}
+            </ul>
+
+            <h3>Heading Counts</h3> 
+            {% for tag, count in result.heading_counts.items() %} 
+                <p>{{ tag }}: {{ count }}</p>
+            {% endfor %}
+
+        {% else %}
+            <p>No headings found or unable to fetch the page.</p> 
+        {% endif %}
+
+        <h2>Images</h2>
+        {% if result.image_counts %}
+            <h3>Image Type Counts</h3>
+            <ul>
+            {% for image_type, count in result.image_counts.items() %} 
+                <li>{{ image_type }}: {{ count }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No images found or unable to fetch the page.</p> 
+        {% endif %} 
+
+        <h2>Paragraphs</h2>
+        <p>Paragraph Count: {{ result.paragraph_count }}</p>
+        <p>Keyword Density (Paragraphs): {{ result.paragraph_density | round(1) }}%</p> 
+
+        <h2>Links</h2> 
+        <p>Internal Links: {{ result.internal_links }}</p>
+        <p>External Links: {{ result.external_links }}</p>
+
+        <h2>Meta Tags</h2>
+        {% if result.meta_tags %}
+            <ul>
+            {% for tag in result.meta_tags %}
+                <li>
+                {% if tag.name %}<strong>Name:</strong> {{ tag.name }} {% endif %}
+                {% if tag.property %}<strong>Property:</strong> {{ tag.property }} {% endif %}
+                {% if tag.content %}<strong>Content:</strong> {{ tag.content }} {% endif %}       
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No meta tags found or unable to fetch the page.</p> 
+        {% endif %}
+        
+        {% if result.publish_date or result.modify_date %} 
+        <div class="dates">
+            {% if result.publish_date %}
+                <p>Published Date: {{ result.publish_date }}</p>
+            {% endif %}
+            {% if result.modify_date %}
+                <p>Last Modified Date: {{ result.modify_date }}</p>
+            {% endif %}
+        </div>
+        {% endif %} 
+
+        <h2>Script Execution Details</h2> 
+        {% if result.script_ip_address %}
+            <p>Script IP Address: {{ result.script_ip_address }}</p>
+        {% endif %}
+        {% if result.gl_parameter %}
+            <p>Google 'gl' Parameter Used: {{ result.gl_parameter }}</p>
+        {% endif %}
+        {% if result.user_agent %}  
+            <p>User Agent: {{ result.user_agent }}</p> 
+        {% endif %}
+
+    </div>
+	
+	
+	
+	
+	
+	
+    {% endfor %}
+	
+	
+	
+	
+	
+	
+</body>
+</html>
